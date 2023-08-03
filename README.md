@@ -1,6 +1,6 @@
-- 👋 Hi, I’m @Marulis60
+- 👋 Hi, I’m @Marulis60 (MARMA)
 - 👀 I’m interested in beekeeping
-- 🌱 I’m currently learning Python
+- 🌱 I’m currently learning Python and I like it
 -
 
 <!---
