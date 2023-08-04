@@ -9,17 +9,20 @@ def lenteles_spausdinimas(lentele):  # spausdinama 3x3 lentelė su tarpais
 def nr_ivedimas(zaidejas, simb):     # kiekvienas žaidėjas įveda dviženklį skaičių, kuris paverčiamas eil/stul nr.
     flag = True
     while flag == True:
-        nr = str(input(zaidejas))
-        if int(nr) > 10 and int(nr) < 14 or int(nr) > 20 and int(nr) < 24 or int(nr) > 30 and int(nr) < 34:
-            i = int(nr[0]) - 1
-            j = int(nr[1]) - 1
-            if lentele[i * 3 + j] == " ":       # įvesti galima tik į tuščią langelį
-                lentele[i * 3 + j] = simb
-                flag = False
+        try:
+            nr = str(input(f'{zaidejas} įveskite "{simb}" '))
+            if int(nr) > 10 and int(nr) < 14 or int(nr) > 20 and int(nr) < 24 or int(nr) > 30 and int(nr) < 34:
+                i = int(nr[0]) - 1
+                j = int(nr[1]) - 1
+                if lentele[i * 3 + j] == " ":       # įvesti galima tik į tuščią langelį
+                    lentele[i * 3 + j] = simb
+                    flag = False
+                else:
+                    print("Užimtas langelis, kartokite")
             else:
-                print("Užimtas langelis, kartokite")
-        else:
-            print("neteisingai įvestas skaičius")
+                print("neteisingai įvestas skaičius")
+        except ValueError:
+            print("neteisingai įvestas simbolis")
     lenteles_spausdinimas(lentele)
 
 
@@ -45,7 +48,7 @@ nuliuku_zaidejas = input("Nuliukais žais? ")
 kryziuku_zaidejas = input("Kryziukais žais? ")
 kryziuku_pergales = 0
 nuliuku_pergales = 0
-print("0-", nuliuku_zaidejas, "  X-", kryziuku_zaidejas)
+print("---------------------------\n Įveskite dviženklį skaičių\n eilutės nr. ir stulpelio nr. \n pvz. '11' '33'")
 
 #formuojame Žaidimo lentelę
 lentele = []
