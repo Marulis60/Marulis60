@@ -1,20 +1,42 @@
-# Žaidimas kryžiukai/nuliukai by Marma
+# Žaidimas kryžiukai/nuliukai by MarMa
 
-def lenteles_spausdinimas(lentele):  # spausdinama 3x3 lentelė su tarpais
+class Zaidejas:
+    def __init__(self, vardas, simbolis, pergales):
+        self.vardas = vardas
+        self.simbolis = simbolis
+        self.pergales = pergales
+
+    def __str__(self):
+        return f"Vardas: {self.vardas}, simbolis: '{self.simbolis}', pergalių sk. {self.pergales}"
+
+
+lentele = []
+
+
+def lenteles_formavimas():
+    global lentele
+    lentele = []
+    for i in range(3):
+        for j in range(3):
+            lentele.append(" ")
+    lenteles_spausdinimas()
+
+
+def lenteles_spausdinimas():  # spausdinama 3x3 lentelė su tarpais
     print("    1    2    3")
     for i in range(3):
         print(i + 1, lentele[i * 3:i * 3 + 3])
 
 
-def nr_ivedimas(zaidejas, simb):     # kiekvienas žaidėjas įveda dviženklį skaičių, kuris paverčiamas eil/stul nr.
+def nr_ivedimas(zaidejas, simb):  # kiekvienas žaidėjas įveda dviženklį skaičių, kuris paverčiamas eil/stul nr.
     flag = True
     while flag == True:
         try:
-            nr = str(input(f'{zaidejas} įveskite "{simb}" '))
+            nr = str(input(f'"{simb}" {zaidejas} įveskite dviženklį skaičių '))
             if int(nr) > 10 and int(nr) < 14 or int(nr) > 20 and int(nr) < 24 or int(nr) > 30 and int(nr) < 34:
                 i = int(nr[0]) - 1
                 j = int(nr[1]) - 1
-                if lentele[i * 3 + j] == " ":       # įvesti galima tik į tuščią langelį
+                if lentele[i * 3 + j] == " ":  # įvesti galima tik į tuščią langelį
                     lentele[i * 3 + j] = simb
                     flag = False
                 else:
@@ -23,7 +45,7 @@ def nr_ivedimas(zaidejas, simb):     # kiekvienas žaidėjas įveda dviženklį 
                 print("neteisingai įvestas skaičius")
         except ValueError:
             print("neteisingai įvestas simbolis")
-    lenteles_spausdinimas(lentele)
+    lenteles_spausdinimas()
 
 
 # tikrinama ar laimėjo kuris nors žaidėjas (horizontaliai, vertikaliai, įstrižai)
@@ -43,69 +65,56 @@ def ar_lygiosios(lentele):  # jei pasibaigė langeliai ir niekas nelaimėjo - ta
     else:
         return True
 
+
 # pradinis žaidėjų vardų įvedimas
 nuliuku_zaidejas = input("Nuliukais žais? ")
+zaidejas0 = Zaidejas(nuliuku_zaidejas, "0", 0)
 kryziuku_zaidejas = input("Kryziukais žais? ")
-kryziuku_pergales = 0
-nuliuku_pergales = 0
+zaidejasX = Zaidejas(kryziuku_zaidejas, "X", 0)
+print("Žaidimo pradžia ", zaidejas0)
+print("Žaidimo pradžia ", zaidejasX)
 print("---------------------------\n Įveskite dviženklį skaičių\n eilutės nr. ir stulpelio nr. \n pvz. '11' '33'")
 
-#formuojame Žaidimo lentelę
-lentele = []
-for i in range(3):
-    for j in range(3):
-        lentele.append(" ")
-lenteles_spausdinimas(lentele)
-zaid = "t"
+# formuojame Žaidimo lentelę
+lenteles_formavimas()
+
+zaid = "t"  # bus žaidžiama tol, kol zaid reiksmė pasikeis
 while zaid == "t":
-    nr_ivedimas(nuliuku_zaidejas, "0")
-    if (ar_laimejo(lentele, "0")):
-        print(f"laimėjo  {nuliuku_zaidejas}")
-        nuliuku_pergales += 1
-        print("rezultatas", nuliuku_zaidejas, nuliuku_pergales, kryziuku_zaidejas, kryziuku_pergales)
+    nr_ivedimas(zaidejas0.vardas, zaidejas0.simbolis)
+    if (ar_laimejo(lentele, zaidejas0.simbolis)):
+        print(f"laimėjo  {zaidejas0.vardas}")
+        zaidejas0.pergales += 1
+        print("rezultatas", zaidejas0.vardas, zaidejas0.pergales, zaidejasX.vardas, zaidejasX.pergales)
         zaid = input("Ar dar žaisite? t/n ")
         if zaid == "t":
-            lentele = []
-            for i in range(3):
-                for j in range(3):
-                    lentele.append(" ")
-            lenteles_spausdinimas(lentele)
+            lentele = "         "
+            lenteles_formavimas()
         else:
             exit()
     elif ar_lygiosios(lentele) == True:
         print("lygiosios ")
-        print("rezultatas", nuliuku_zaidejas, nuliuku_pergales, kryziuku_zaidejas, kryziuku_pergales)
+        print("rezultatas", zaidejas0.vardas, zaidejas0.pergales, zaidejasX.vardas, zaidejasX.pergales)
         zaid = input("Ar dar žaisite? t/n ")
         if zaid == "t":
-            lentele = []
-            for i in range(3):
-                for j in range(3):
-                    lentele.append(" ")
-            lenteles_spausdinimas(lentele)
+            lenteles_formavimas()
         else:
             exit()
 
-    nr_ivedimas(kryziuku_zaidejas, "X")
-    if (ar_laimejo(lentele, "X")):
-        print(f"laimėjo  {kryziuku_zaidejas}")
-        kryziuku_pergales = +1
-        print("rezultatas", nuliuku_zaidejas, nuliuku_pergales, kryziuku_zaidejas, kryziuku_pergales)
+    nr_ivedimas(zaidejasX.vardas, zaidejasX.simbolis)
+    if (ar_laimejo(lentele, zaidejasX.simbolis)):
+        print(f"laimėjo  {zaidejasX.vardas}")
+        zaidejasX.pergales += 1
+        print("rezultatas", zaidejas0.vardas, zaidejas0.pergales, zaidejasX.vardas, zaidejasX.pergales)
         zaid = input(str("Ar dar žaisite? t/n "))
         if zaid == "t":
-            lentele = []
-            for i in range(3):
-                for j in range(3):
-                    lentele.append(" ")
-            lenteles_spausdinimas(lentele)
+            lentele = "         "
+            lenteles_formavimas()
         else:
             exit()
     elif ar_lygiosios(lentele) == True:
         print("lygiosios ")
-        print("rezultatas", nuliuku_zaidejas, nuliuku_pergales, kryziuku_zaidejas, kryziuku_pergales)
+        print("rezultatas", zaidejas0.vardas, zaidejas0.pergales, zaidejasX.vardas, zaidejasX.pergales)
         zaid = input("Ar dar žaisite? t/n ")
         if zaid == "t":
-            lentele = []
-            for i in range(3):
-                for j in range(3):
-                    lentele.append(" ")
-            lenteles_spausdinimas(lentele)
+            lentele = "         "
+            lenteles_formavimas()
